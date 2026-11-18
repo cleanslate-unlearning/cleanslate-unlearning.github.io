@@ -1,0 +1,10 @@
+node_modules/
+.next/
+out/
+analysis/cache/
+analysis/*.log
+.agents/
+skills-lock.json
+src/
+.DS_Store
+*.swp
