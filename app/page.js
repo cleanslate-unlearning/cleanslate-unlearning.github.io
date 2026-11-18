@@ -4,6 +4,8 @@ import SliderFigure from "@/components/SliderFigure";
 import OutwardFigure from "@/components/OutwardFigure";
 import DrawFigure from "@/components/DrawFigure";
 import { Note, Cite, References } from "@/components/Notes";
+import SlateArt from "@/components/SlateArt";
+import PipelineHero from "@/components/PipelineHero";
 
 const NGGYU = <i>Never Gonna Give You Up</i>;
 const BIBTEX = `@article{jha2026forget,
@@ -17,32 +19,40 @@ export default function Page() {
   return (
     <div className="page">
       <header className="hero">
-        <h1>What to Forget in Unlearning?</h1>
-        <div className="authors">Animesh Jha*, Arpandeep Khatua*, Youssef Allouah, Sanmi Koyejo · Stanford University</div>
-        <div className="links">
-          <a href="https://arxiv.org/abs/2608.14855">[Paper]</a>
-          <a href="https://huggingface.co/unlearning-cleanslate">[Data]</a>
-          <a href="https://github.com/akhatua2/CleanSlate">[Code]</a>
+        <div className="hero-text">
+          <h1>What to Forget in Unlearning?</h1>
+          <div className="authors">Animesh Jha*, Arpandeep Khatua*, Youssef Allouah, Sanmi Koyejo</div>
+          <div className="affil">Stanford University. *Equal contribution.</div>
+          <div className="links">
+            <a href="https://arxiv.org/abs/2608.14855">Paper</a>
+            <a href="https://huggingface.co/unlearning-cleanslate">Data</a>
+            <a href="https://github.com/akhatua2/CleanSlate">Code</a>
+          </div>
         </div>
+        <SlateArt />
       </header>
 
-      <figure className="viz wide hero-fig">
-        <BenchmarkFigure />
-        <figcaption>
-          <b>The whole benchmark is one function.</b> You get a request, a corpus and the model, and you return a
-          forget set and, optionally, a retain set. Everything after that (the unlearning algorithm and the scoring)
-          is the same for every submission.
-        </figcaption>
-      </figure>
-
       <section className="prose">
-        <p className="tldr">
-          <b>Tl;dr</b> Unlearning benchmarks hand the method the exact text to forget, but a real request only names a
+        <p className="abstract">
+          Unlearning benchmarks hand the method the exact text to forget, but a real request only names a
           work: stop reproducing this song. We make the missing step, choosing the forget set, into a benchmark of its
           own, and find that searching the training data for a song suppresses only about a fifth of what the model can
           reproduce. Handing over the exact passages suppresses 99.4% of them, along with 86.3% of everything else the
           model could reproduce that nobody asked about.
         </p>
+      </section>
+
+      <figure className="viz wide hero-fig">
+        <PipelineHero />
+        <figcaption>
+          <b>Unlearning starts from a request that names a work.</b> Before any algorithm runs, someone has to turn
+          that request into a forget set. Existing benchmarks skip this step and hand the algorithm the exact text.
+          Here the forget set comes from curation, and the model loses the requested song along with others nobody
+          asked it to forget.
+        </figcaption>
+      </figure>
+
+      <section className="prose">
 
         <p>
           Suppose a record label writes to a model developer with a simple request: stop reproducing {NGGYU}. The
@@ -55,6 +65,18 @@ export default function Page() {
           has to build that set, and the request doesn’t say how. We call this step <b>forget set curation</b>, and on
           this page we ask how much it matters.
         </p>
+      </section>
+
+      <figure className="viz wide bench-fig">
+        <BenchmarkFigure />
+        <figcaption>
+          <b>The whole benchmark is one function.</b> You get a request, a corpus and the model, and you return a
+          forget set and, optionally, a retain set. Everything after that (the unlearning algorithm and the scoring)
+          is the same for every submission.
+        </figcaption>
+      </figure>
+
+      <section className="prose">
         <p>
           Our answer, measured on six open models
           <Note n={1}>
@@ -73,16 +95,22 @@ export default function Page() {
           et al. <Cite k="hayes, cooper" />, we measure extraction probabilistically. We slide a window over each
           work in steps of 10 characters and split it into a 100-character prefix <i>x</i> and the 100 characters that
           follow, <i>z</i>. The <b>extraction probability</b> is the chance that the model, given the prefix,
-          produces exactly that continuation, token by token:
+          produces exactly that continuation, token by token.
         </p>
-        <div className="eq" role="math" aria-label="p_z equals p theta of z given x, the product over t of p theta of z_t given x and z before t">
-          <i>p</i><sub><i>z</i></sub> = <i>p</i><sub>θ</sub>(<i>z</i> | <i>x</i>) ={" "}
-          <span className="op"><span className="lim">|<i>z</i>|</span><span className="big">∏</span><span className="lim"><i>t</i>=1</span></span>{" "}
-          <i>p</i><sub>θ</sub>(<i>z</i><sub><i>t</i></sub> | <i>x</i>, <i>z</i><sub>&lt;<i>t</i></sub>)
-        </div>
+        <details className="more">
+          <summary>How we measure extraction</summary>
+          <div className="eq" role="math" aria-label="p_z equals p theta of z given x, the product over t of p theta of z_t given x and z before t">
+            <i>p</i><sub><i>z</i></sub> = <i>p</i><sub>θ</sub>(<i>z</i> | <i>x</i>) ={" "}
+            <span className="op"><span className="lim">|<i>z</i>|</span><span className="big">∏</span><span className="lim"><i>t</i>=1</span></span>{" "}
+            <i>p</i><sub>θ</sub>(<i>z</i><sub><i>t</i></sub> | <i>x</i>, <i>z</i><sub>&lt;<i>t</i></sub>)
+          </div>
+          <p>
+            We compute it with teacher forcing, i.e., one forward pass over <i>x</i> followed by <i>z</i>, so no sampling
+            is involved.
+          </p>
+        </details>
         <p>
-          We compute it with teacher forcing, i.e., one forward pass over <i>x</i> followed by <i>z</i>, so no sampling
-          is involved. A window is <b>extractable</b> when <i>p</i><sub><i>z</i></sub> ≥ τ with τ = 10<sup>−3</sup>:
+          A window is <b>extractable</b> when <i>p</i><sub><i>z</i></sub> ≥ τ with τ = 10<sup>−3</sup>:
           sample the continuation a thousand times and you expect to see the exact text about once. A work counts as
           extractable from a model when at least 5% of its windows are.
           <Note n={2}>

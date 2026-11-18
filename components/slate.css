@@ -1,0 +1,26 @@
+.slate { width: 200px; height: auto; display: block; overflow: visible; }
+.slate .w { fill: var(--rule); }
+.slate .w.mem { fill: var(--mem-4); animation: slate-erase 9s ease-in-out infinite; }
+.slate .w.near { animation: slate-fade 9s ease-in-out infinite; }
+.slate .sweep { stroke: var(--ink-3); stroke-width: 1.5; stroke-linecap: round; opacity: 0; animation: slate-sweep 9s linear infinite; }
+
+@keyframes slate-erase {
+  0%, 4% { fill: var(--mem-4); }
+  9%, 72% { fill: var(--blank); }
+  86%, 100% { fill: var(--mem-4); }
+}
+@keyframes slate-fade {
+  0%, 4% { opacity: 1; }
+  10%, 72% { opacity: .35; }
+  86%, 100% { opacity: 1; }
+}
+@keyframes slate-sweep {
+  0% { transform: translateX(0); opacity: 0; }
+  3% { opacity: .8; }
+  33% { transform: translateX(220px); opacity: .8; }
+  37%, 100% { transform: translateX(220px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slate .w.mem, .slate .w.near, .slate .sweep { animation: none; }
+}

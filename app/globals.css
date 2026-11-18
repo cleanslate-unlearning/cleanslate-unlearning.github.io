@@ -7,17 +7,17 @@
 
 :root {
   color-scheme: light;
-  --paper: #fbfaf6;
-  --paper-2: #f3f1ea;
-  --rule: #e2dfd5;
-  --ink-1: #16171a;
-  --ink-2: #4f525a;
-  --ink-3: #8b8e96;
+  --paper: #f4f5f6;
+  --paper-2: #e9ecef;
+  --rule: #d9dde2;
+  --ink-1: #1b1e24;
+  --ink-2: #4a505b;
+  --ink-3: #858c97;
   --link: #1f5f8b;
 
   /* redacted (unextractable) word block */
-  --blank: #e6e3da;
-  --blank-hover: #d3cfc3;
+  --blank: #dde1e6;
+  --blank-hover: #c9cfd6;
 
   /* memory (red): p_z from 1e-3 (light) to 1 (dark) */
   --mem-1: #ffe5e3;
@@ -71,7 +71,8 @@ body {
   line-height: 1.6;
   font-optical-sizing: auto;
 }
-a { color: var(--link); text-underline-offset: 2px; }
+a { color: var(--link); text-decoration-color: rgba(31, 95, 139, .3); text-underline-offset: 2px; }
+a:hover { text-decoration-color: currentColor; }
 
 .page { padding: 0 16px 120px; }
 .prose { max-width: var(--measure); margin: 0 auto; }
@@ -124,33 +125,44 @@ figure.viz figcaption b { color: var(--ink-1); font-weight: 600; }
 /* figures adapt to the column, not the screen */
 figure.viz { container-type: inline-size; max-width: var(--measure); }
 
-/* ───────── type scale: one hierarchy for prose and figures ─────────
-   display 46 · section 30 · figure title 22 · lead 21 · body 19 · ui 14 · caption 14 · small 12.5 */
+/* type scale: display 38 · section 26 · figure title 20 · lead 19.5 · body 18 · ui 14 · caption 13.5 · small 12.5 */
 :root {
-  --fs-display: 46px; --fs-h2: 30px; --fs-h3: 22px; --fs-lead: 21px; --fs-body: 19px;
-  --fs-ui: 14px; --fs-cap: 14px; --fs-small: 12.5px;
+  --fs-display: 38px; --fs-h2: 26px; --fs-h3: 20px; --fs-lead: 19.5px; --fs-body: 18px;
+  --fs-ui: 14px; --fs-cap: 13.5px; --fs-small: 12.5px;
 }
 @media (max-width: 640px) {
-  :root { --fs-display: 34px; --fs-h2: 25px; --fs-h3: 19px; --fs-lead: 18.5px; --fs-body: 17.5px; --fs-ui: 13.5px; --fs-cap: 13px; }
+  :root { --fs-display: 30px; --fs-h2: 22px; --fs-h3: 18px; --fs-lead: 18px; --fs-body: 17px; --fs-ui: 13.5px; --fs-cap: 13px; }
 }
 body { font-size: var(--fs-body); line-height: 1.62; }
-header.hero { padding: 96px 0 8px; }
-header.hero h1 { font-size: var(--fs-display); line-height: 1.08; letter-spacing: -0.018em; font-weight: 500; margin: 0 0 16px; }
-header.hero .authors { font-size: var(--fs-ui); }
-header.hero .links { font-size: 13px; margin-top: 8px; }
-h2 { font-size: var(--fs-h2); line-height: 1.2; letter-spacing: -0.01em; margin: 96px 0 16px; }
-h2 .num { font: 500 15px var(--sans); color: var(--ink-3); vertical-align: 0.35em; margin-right: 12px; }
-.prose p { margin: 0 0 20px; }
 
-/* tl;dr: a lead paragraph, no box */
-.tldr { font-size: var(--fs-lead); line-height: 1.5; color: var(--ink-1); margin: 28px 0 8px; }
-.tldr b:first-child {
-  display: block; font: 600 12.5px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;
+header.hero { padding: 80px 0 12px; display: flex; align-items: center; gap: 40px; }
+header.hero .hero-text { flex: 1; min-width: 0; }
+header.hero h1 { font-size: var(--fs-display); line-height: 1.12; font-weight: 500; letter-spacing: -0.015em; margin: 0; }
+header.hero .authors { font: 14px/1.5 var(--sans); color: var(--ink-2); margin-top: 14px; }
+header.hero .links { gap: 20px; margin-top: 14px; font: 500 14px/1 var(--sans); }
+header.hero .links a { text-decoration: none; border-bottom: 1px solid rgba(31, 95, 139, .3); padding-bottom: 2px; }
+header.hero .links a:hover { border-bottom-color: currentColor; }
+@media (max-width: 640px) {
+  header.hero { flex-direction: column-reverse; align-items: flex-start; gap: 24px; padding-top: 48px; }
+  header.hero .slate { width: 150px; }
 }
 
-/* figures: titles in serif at --fs-h3, all UI text in sans at --fs-ui, notes at --fs-small */
-figure.viz { margin: 44px auto 56px; }
-figure.viz figcaption { font-size: var(--fs-cap); line-height: 1.55; margin-top: 18px; }
+h2 { font-size: var(--fs-h2); line-height: 1.25; font-weight: 500; letter-spacing: -0.01em; margin: 80px 0 16px; }
+h2 .num { font: 500 14px var(--sans); color: var(--ink-3); vertical-align: 0.3em; margin-right: 12px; }
+h3 { font-size: var(--fs-h3); line-height: 1.35; font-weight: 500; margin: 36px 0 8px; }
+.prose p { margin: 0 0 20px; }
+
+.abstract { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-1); margin: 40px 0 8px; }
+header.hero .affil { font: 13px/1.5 var(--sans); color: var(--ink-3); }
+
+details.more { margin: 0 0 20px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 10px 0; }
+details.more summary { font: 500 14px var(--sans); color: var(--ink-2); cursor: pointer; }
+details.more[open] summary { margin-bottom: 14px; }
+details.more p:last-child { margin-bottom: 4px; }
+
+figure.viz { margin: 40px auto 48px; }
+figure.viz.hero-fig, figure.viz.bench-fig { max-width: 760px; }
+figure.viz figcaption { font-size: var(--fs-cap); line-height: 1.5; margin-top: 16px; }
 .page .ui { font-size: var(--fs-ui); }
 .page .dr-q, .page .sl-ask, .page .sl-say, .page .tm-say, .page .pu-say { font-family: var(--serif); font-size: var(--fs-h3); line-height: 1.4; font-weight: 400; }
 .page .dr-q { font-weight: 500; margin-bottom: 14px; }
@@ -160,14 +172,8 @@ figure.viz figcaption { font-size: var(--fs-cap); line-height: 1.55; margin-top:
 .page .bm-card .s, .page .run-head { font-size: var(--fs-ui); }
 .page .dr-sub, .page .fx-key, .page .fx-note, .page .sl-legend, .page .ow-legend, .page .dr-src, .page .flame-legend { font-size: var(--fs-small); }
 .page .sl-wall header .h, .page .ow-label { font-size: 16px; }
-.page .sl-big .num { font-size: 34px; }
+.page .sl-big .num { font-size: 32px; }
 .page .tabs button { font-size: 16px; }
 
-/* justified body text, hyphenated so narrow columns don't open rivers */
-.prose p, .prose .tldr { text-align: justify; hyphens: auto; -webkit-hyphens: auto; hyphenate-limit-chars: 7 3 3; text-wrap: pretty; }
-.prose .sidenote { text-align: left; hyphens: manual; }
-/* no orphans: headings and figure titles split into even lines, everything else avoids a lone last word */
 h1, h2, h3, .page .dr-q, .page .sl-ask, .page .sl-say, .page .tm-say, .page .pu-say { text-wrap: balance; }
 p, li, figcaption, .bm-card .s, .sc-k, .sidenote, .dr-sub, .fx-key { text-wrap: pretty; }
-/* phones: too few words per line to justify without gaps */
-@media (max-width: 600px) { .prose p, .prose .tldr { text-align: left; } }
